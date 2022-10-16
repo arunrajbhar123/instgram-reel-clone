@@ -1,0 +1,39 @@
+.frame {
+  width: 28%;
+  margin: auto;
+  height: 100vh;
+  position: relative;
+}
+.Info {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+}
+.Info > div {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 10px;
+}
+
+span {
+  font-size: 15px;
+  margin-top: -12px;
+}
+
+@media (min-width: 710px) and (max-width: 900px) {
+  .frame {
+    width: 60%;
+  }
+}
+@media (min-width: 400px) and (max-width: 709px) {
+  .frame {
+    width: 50%;
+  }
+}
+
+@media (min-width: 200px) and (max-width: 399px) {
+  .frame {
+    width: 100%;
+  }
+}
