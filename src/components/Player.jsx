@@ -108,11 +108,7 @@ const Player = ({ index, url, liked, message, youLike, name, run }) => {
             <div></div>
           </div>
 
-          <div
-           className={styles.songName}
-          >
-            tere liye main tu mera
-          </div>
+          <div className={styles.songName}>tere liye main tu mera</div>
         </div>
       </div>
       <video
@@ -120,6 +116,7 @@ const Player = ({ index, url, liked, message, youLike, name, run }) => {
         height="100%"
         style={{ objectFit: "cover" }}
         loop
+       
         onClick={(e) => handleMute(e.target)}
         ref={(element) => {
           // list=(...list);
