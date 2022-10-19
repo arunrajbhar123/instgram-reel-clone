@@ -4,15 +4,9 @@ import { IoCameraOutline, IoHeartOutline, IoSend } from "react-icons/io5";
 import { IoMdMore } from "react-icons/io";
 import { TbMessageCircle2 } from "react-icons/tb";
 import { IoVolumeMuteOutline, IoVolumeMediumOutline } from "react-icons/io5";
-const Player = ({ index, url, liked, message, youLike, name }) => {
+import { loadData, saveData } from "../utils/localStorage.js";
+const Player = ({ index, url, liked, message, youLike, name, run }) => {
   const [play, setPlay] = useState(true);
-  const playNow = useRef([]);
-  const current = useRef(0);
-  useEffect(() => {
-    if (playNow.current[0]) {
-      playNow.current[current.current].play();
-    }
-  }, []);
 
   const handleCamera = (e) => {
     const constraints = {
@@ -29,29 +23,48 @@ const Player = ({ index, url, liked, message, youLike, name }) => {
   };
 
   const handleMute = (e) => {
-    if (play) {
-      e.muted = true;
+    if (loadData("play")) {
+      saveData("play", false);
       setPlay(false);
-    } else {
       e.muted = false;
+    } else {
+      saveData("play", true);
+      e.muted = true;
+
       setPlay(true);
     }
   };
+
+  const handleLike = (e) => {};
+
   return (
     <div className={styles.frame}>
       <ShowMuteIcon play={play} />
-      <IoCameraOutline
+      {/* <IoCameraOutline
         onClick={(e) => handleCamera(e)}
         style={{ position: "fixed", top: "15", right: "15", fontSize: "30" }}
-      />
+      /> */}
       <div style={PositionOfIcon}>
-        <IoHeartOutline />
+        <IoHeartOutline
+          onClick={(e) => handleLike(e)}
+          style={{ zIndex: "1" }}
+          onPointerOver={(e) => (e.target.style.cursor = "pointer")}
+        />
         <span>{liked}</span>
-        <TbMessageCircle2 style={{ transform: "rotate(-100deg)" }} />
+        <TbMessageCircle2
+          style={{ transform: "rotate(-100deg)", zIndex: "1" }}
+          onPointerOver={(e) => (e.target.style.cursor = "pointer")}
+        />
         <span>{message}</span>
 
-        <IoSend style={{ transform: "rotate(-30deg)" }} />
-        <IoMdMore />
+        <IoSend
+          style={{ transform: "rotate(-30deg)", zIndex: "1" }}
+          onPointerOver={(e) => (e.target.style.cursor = "pointer")}
+        />
+        <IoMdMore
+          style={{ zIndex: "1" }}
+          onPointerOver={(e) => (e.target.style.cursor = "pointer")}
+        />
         <div
           style={{
             background: "red",
@@ -78,24 +91,38 @@ const Player = ({ index, url, liked, message, youLike, name }) => {
               background: "transparent",
               color: "#fff",
               border: "1px solid #fff",
+              padding: "4px 10px",
             }}
           >
             Follow
           </button>
         </div>
+        <div
+          style={{
+            padding: "12px 4px",
+          }}
+        >
+          <div className={styles.Visual}>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+
+          <div
+           className={styles.songName}
+          >
+            tere liye main tu mera
+          </div>
+        </div>
       </div>
       <video
-        ref={(element) => {
-          playNow.current[index] = element;
-        }}
         width="100%"
         height="100%"
         style={{ objectFit: "cover" }}
         loop
         onClick={(e) => handleMute(e.target)}
-        onChange={(e) => {
-          console.log("hi");
-          current.current++;
+        ref={(element) => {
+          // list=(...list);
         }}
       >
         <source src={url} />
@@ -112,6 +139,7 @@ const PositionOfIcon = {
   fontSize: "30px",
   display: "grid",
   justifyContent: "center",
+
   gap: "15px",
   alignItems: "center",
 };
@@ -119,20 +147,18 @@ const PositionOfIcon = {
 const ShowMuteIcon = ({ play }) => {
   const hidden = useRef();
   useEffect(() => {
-    let clear = setTimeout(() => {
-      hidden.current.style.display = "none";
-      return () => {
-        if (clear) {
-          clearTimeout(clear);
-        }
-      };
-    }, 1000);
     hidden.current.style.display = "block";
+    let clear = setTimeout(() => {
+      if (clear) {
+        clearTimeout(clear);
+      }
+      hidden.current.style.display = "none";
+    }, 2000);
   }, [play]);
 
   return (
     <div style={{ ...MuteIcon }} ref={hidden}>
-      {!play ? <IoVolumeMuteOutline /> : <IoVolumeMediumOutline />}
+      {play ? <IoVolumeMuteOutline /> : <IoVolumeMediumOutline />}
     </div>
   );
 };
@@ -141,5 +167,12 @@ const MuteIcon = {
   position: "absolute",
   top: "45%",
   right: "40%",
-  fontSize: "3rem",
+  padding: "15px",
+  fontSize: "2rem",
+  background: "grey",
+  borderRadius: "3rem",
+  width: "4rem",
+  height: "4rem",
+  display: "flex",
+  alignItems: "center",
 };

@@ -3,14 +3,17 @@
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  background-color: #111;
+}
 .holster {
   height: 100vh;
   color: #fff;
-  width: 100%;
+  width: 28%;
+  margin: auto;
 }
 .holster {
   display: flex;
-
   justify-content: space-between;
   flex-flow: column nowrap;
   font-family: monospace;
@@ -31,10 +34,6 @@
   flex-flow: column nowrap;
 }
 
-.x.mandatory-scroll-snapping {
-  scroll-snap-type: x mandatory;
-}
-
 .y.mandatory-scroll-snapping {
   scroll-snap-type: y mandatory;
 }
@@ -50,9 +49,17 @@
   height: 100%;
 }
 
+@media (min-width: 501px) and (max-width: 800px) {
+  .holster {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    width: 50%;
+  }
+}
 @media (min-width: 200px) and (max-width: 500px) {
   .holster {
-    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+    height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
+    width: 100%;
   }
 }

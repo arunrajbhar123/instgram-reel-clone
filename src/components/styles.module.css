@@ -4,6 +4,7 @@
   height: 100vh;
   position: relative;
 }
+
 .Info {
   position: absolute;
   bottom: 15px;
@@ -16,9 +17,46 @@
   gap: 10px;
 }
 
+.Visual {
+  display: flex;
+  align-items: center;
+}
+
+.Visual div {
+  width: 2px;
+  height: 10px;
+  background: #fff;
+  margin: 2px;
+  /* animation: all 0.5s infinite; */
+}
+.Visual div:nth-child(1) {
+  animation: all 0.9s infinite;
+}
+.Visual div:nth-child(2) {
+  animation: all 0.4s infinite;
+}
+.Visual div:nth-child(3) {
+  animation: all 0.6s infinite;
+}
 span {
   font-size: 15px;
   margin-top: -12px;
+}
+
+.songName {
+  width: 75%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: ltr;
+}
+@keyframes all {
+  from {
+    height: 2px;
+  }
+  to {
+    height: 10px;
+  }
 }
 
 @media (min-width: 710px) and (max-width: 900px) {
