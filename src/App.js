@@ -4,16 +4,27 @@ import Player from "./components/Player";
 import videoURL from "./video/2.mp4";
 import { useEffect, useState, useRef } from "react";
 import { loadData, saveData } from "./utils/localStorage";
+import axios from "axios";
 function App() {
-  const data = [
-    { name: "Suraj", url: videoURL, liked: 25, message: 25, youLike: true },
-    { name: "Arju", url: videoURL, liked: 85, message: 55, youLike: false },
-    { name: "Kos", url: videoURL, liked: 65, message: 55, youLike: true },
-    { name: "Kea", url: videoURL, liked: 45, message: 85, youLike: false },
-  ];
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  useEffect(() => {
+    axios
+      .get("https://server-arunrajbhar.vercel.app/")
+      .then((res) => {
+        setData(res.data);
+        setIsLoading(false);
+        setIsError(false);
+      })
+      .catch((err) => {
+        setIsError(true);
+      });
+  }, []);
+  console.log(data);
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty("--vh", `${vh}px`);
-  const list = useRef([]);
+
   const [run, setRun] = useState(0);
 
   useEffect(() => {
@@ -64,7 +75,9 @@ function App() {
       >
         {data?.length &&
           data.map((el, index) => (
-            <Player key={index} {...el} index={index} run={run} />
+            <Player key={index} {...el} index={index} run={run}
+            isLoading={isLoading} isError={isError}
+            />
           ))}
       </div>
     </div>

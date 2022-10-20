@@ -5,7 +5,18 @@ import { IoMdMore } from "react-icons/io";
 import { TbMessageCircle2 } from "react-icons/tb";
 import { IoVolumeMuteOutline, IoVolumeMediumOutline } from "react-icons/io5";
 import { loadData, saveData } from "../utils/localStorage.js";
-const Player = ({ index, url, liked, message, youLike, name, run }) => {
+import { Skeleton, SkeletonCircle, SkeletonText, Box } from "@chakra-ui/react";
+const Player = ({
+  index,
+  url,
+  liked,
+  message,
+  youLike,
+  name,
+  run,
+  isLoading,
+  isError,
+}) => {
   const [play, setPlay] = useState(true);
 
   const handleCamera = (e) => {
@@ -38,93 +49,112 @@ const Player = ({ index, url, liked, message, youLike, name, run }) => {
   const handleLike = (e) => {};
 
   return (
-    <div className={styles.frame}>
-      <ShowMuteIcon play={play} />
-      {/* <IoCameraOutline
-        onClick={(e) => handleCamera(e)}
-        style={{ position: "fixed", top: "15", right: "15", fontSize: "30" }}
-      /> */}
-      <div style={PositionOfIcon}>
-        <IoHeartOutline
-          onClick={(e) => handleLike(e)}
-          style={{ zIndex: "1" }}
-          onPointerOver={(e) => (e.target.style.cursor = "pointer")}
-        />
-        <span>{liked}</span>
-        <TbMessageCircle2
-          style={{ transform: "rotate(-100deg)", zIndex: "1" }}
-          onPointerOver={(e) => (e.target.style.cursor = "pointer")}
-        />
-        <span>{message}</span>
+    <>
+      {isLoading ? (
+        <Box position="relative" w="100%">
+          <Box
+            w="100%"
+            padding="6"
+            boxShadow="lg"
+            position="absolute"
+            bottom="5"
+          >
+            <Skeleton height="80vh"></Skeleton>
+            <br />
+            <SkeletonCircle size="10" right="5" />
+            <SkeletonText mt="4" noOfLines={3} spacing="4" />
+          </Box>
+        </Box>
+      ) : (
+        <div className={styles.frame}>
+          <ShowMuteIcon play={play} />
+          {/* <IoCameraOutline
+    onClick={(e) => handleCamera(e)}
+    style={{ position: "fixed", top: "15", right: "15", fontSize: "30" }}
+  /> */}
+          <div style={PositionOfIcon}>
+            <IoHeartOutline
+              onClick={(e) => handleLike(e)}
+              style={{ zIndex: "1" }}
+              onPointerOver={(e) => (e.target.style.cursor = "pointer")}
+            />
+            <span>{liked}</span>
+            <TbMessageCircle2
+              style={{ transform: "rotate(-100deg)", zIndex: "1" }}
+              onPointerOver={(e) => (e.target.style.cursor = "pointer")}
+            />
+            <span>{message}</span>
 
-        <IoSend
-          style={{ transform: "rotate(-30deg)", zIndex: "1" }}
-          onPointerOver={(e) => (e.target.style.cursor = "pointer")}
-        />
-        <IoMdMore
-          style={{ zIndex: "1" }}
-          onPointerOver={(e) => (e.target.style.cursor = "pointer")}
-        />
-        <div
-          style={{
-            background: "red",
-            width: "30px",
-            height: "30px",
-            borderRadius: "5px",
-          }}
-        ></div>
-      </div>
-      <div className={styles.Info}>
-        <div>
-          <div
-            style={{
-              background: "red",
-              width: "30px",
-              height: "30px",
-              borderRadius: "5px",
-            }}
-          ></div>
-          <div>{name}</div>
-          <button
-            style={{
-              borderRadius: "5px",
-              background: "transparent",
-              color: "#fff",
-              border: "1px solid #fff",
-              padding: "4px 10px",
+            <IoSend
+              style={{ transform: "rotate(-30deg)", zIndex: "1" }}
+              onPointerOver={(e) => (e.target.style.cursor = "pointer")}
+            />
+            <IoMdMore
+              style={{ zIndex: "1" }}
+              onPointerOver={(e) => (e.target.style.cursor = "pointer")}
+            />
+            <div
+              style={{
+                background: "red",
+                width: "30px",
+                height: "30px",
+                borderRadius: "5px",
+              }}
+            ></div>
+          </div>
+          <div className={styles.Info}>
+            <div>
+              <div
+                style={{
+                  background: "red",
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "5px",
+                }}
+              ></div>
+              <div>{name}</div>
+              <button
+                style={{
+                  borderRadius: "5px",
+                  background: "transparent",
+                  color: "#fff",
+                  border: "1px solid #fff",
+                  padding: "4px 10px",
+                }}
+              >
+                Follow
+              </button>
+            </div>
+            <div
+              style={{
+                padding: "12px 4px",
+              }}
+            >
+              <div className={styles.Visual}>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+
+              <div className={styles.songName}>tere liye main tu mera</div>
+            </div>
+          </div>
+          <video
+            width="100%"
+            height="100%"
+            style={{ objectFit: "cover" }}
+            loop
+            autoPlay=""
+            onClick={(e) => handleMute(e.target)}
+            ref={(element) => {
+              // list=(...list);
             }}
           >
-            Follow
-          </button>
+            <source src={url} />
+          </video>
         </div>
-        <div
-          style={{
-            padding: "12px 4px",
-          }}
-        >
-          <div className={styles.Visual}>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-
-          <div className={styles.songName}>tere liye main tu mera</div>
-        </div>
-      </div>
-      <video
-        width="100%"
-        height="100%"
-        style={{ objectFit: "cover" }}
-        loop
-       
-        onClick={(e) => handleMute(e.target)}
-        ref={(element) => {
-          // list=(...list);
-        }}
-      >
-        <source src={url} />
-      </video>
-    </div>
+      )}
+    </>
   );
 };
 export default Player;
